@@ -1,0 +1,126 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="container">
+        <div class="card mb-4"></div>
+        <div class="card mb-4">
+            <div class="card-body bg-light">
+                <form method="post" enctype="multipart/form-data"
+                      action="{% url 'products:add_product' %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label"
+                               for="basic-form-name">Name</label>
+                        <input class="form-control" name="name"
+                               id="basic-form-name" type="text" required
+                               placeholder="Name"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"
+                               for="basic-form-email">Price</label>
+                        <input class="form-control" name="price"
+                               id="basic-form-email" type="text" required/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-form-password">Discount</label>
+                        <input class="form-control" name="discount"
+                               id="basic-form-password" type="text"
+                               required/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-form-password">Quantity</label>
+                        <input class="form-control" name="quantity"
+                               id="basic-form-password" type="text"
+                               required/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-form-password">Shipping
+                            cost</label>
+                        <input class="form-control" name="shipping_cost"
+                               id="basic-form-password" type="text"
+                               required/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-form-gender">Category</label>
+                        <select class="form-select" name="category"
+                                id="basic-form-gender"
+                                aria-label="Default select example" required>
+                            <option>Select Category</option>
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Upload Image</label>
+                        <input class="form-control" name="images" type="file"
+                               multiple/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-form-textarea">Short
+                            Description</label>
+                        <textarea class="form-control" name="short_description"
+                                  id="basic-form-textarea" rows="3"
+                                  placeholder="Description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="basic-form-textarea">Description</label>
+                        <textarea class="form-control" id="basic-form-textarea"
+                                  name="description" rows="3"
+                                  placeholder="Description"></textarea>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="flexCheckDefault"
+                               type="checkbox" required/>
+                        <label class="form-check-label" for="flexCheckDefault">Default
+                            checkbox</label>
+                    </div>
+                    <div id="key-value-pairs" style="margin-bottom: 20px">
+                        <div class="key-value-pair">
+                            <label for="key1">Key:</label>
+                            <input class="form-control"
+                                   style="display: inline-block;width: auto;margin-right: 90px"
+                                   type="text" id="key1" name="key1" required>
+                            <label for="value1">Value:</label>
+                            <input class="form-control"
+                                   style="display: inline-block;width: auto;"
+                                   type="text" id="value1" name="value1"
+                                   required>
+                            <button class="btn btn-danger remove-pair"
+                                    type="button">Remove
+                            </button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary add-pair" type="button">Add
+                        Pair
+                    </button>
+                    <button class="btn btn-primary" type="submit">Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="card mb-4"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.add-pair').click(function () {
+                var index = $('.key-value-pair').length + 1;
+                var newPair = $('<div class="key-value-pair">' +
+                    '<label for="key' + index + '">Key:</label>' +
+                    '<input class="form-control" style="display: inline-block;width: auto;margin-right: 90px" type="text" id="key' + index + '" name="key' + index + '" required>' +
+                    '<label for="value' + index + '">Value:</label>' +
+                    '<input class="form-control" style="display: inline-block;width: auto;" type="text" id="value' + index + '" name="value' + index + '" required>' +
+                    '<button class="btn btn-danger remove-pair" type="button">Remove</button>' +
+                    '</div>');
+                $('#key-value-pairs').append(newPair);
+            });
+
+            $(document).on('click', '.remove-pair', function () {
+                $(this).closest('.key-value-pair').remove();
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="card mb-4"></div>
+    <div class="card mb-4">
+        <div class="card-body bg-light">
+            <form method="post" enctype="multipart/form-data" action="{% url 'products:edit_product' product.id %}">
+                {% csrf_token %}
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-name">Name</label>
+                <input class="form-control" value="{{ product.name }}" name="name" id="basic-form-name" type="text" required placeholder="{{ product.name }}" />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-email">Price</label>
+                <input class="form-control" name="price" value="{{ product.price }}" id="basic-form-email" type="number" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-password">Discount</label>
+                <input class="form-control" name="discount" value="{{ product.discount }}" id="basic-form-password" type="number" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-password">Quantity</label>
+                <input class="form-control" name="quantity" value="{{ product.quantity }}" id="basic-form-password" type="number" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-password">Shipping cost</label>
+                <input class="form-control" name="shipping_cost" value="{{ product.shipping_cost }}" id="basic-form-password" type="number" required />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-gender">Category</label>
+                <select class="form-select" name="category" id="basic-form-gender" aria-label="Default select example" required>
+                  <option value="{{ product.category.id }}" selected>{{ product.category }}</option>
+                    {% for category in categories %}
+                        {% if product.category != category %}
+                            <option value="{{ category.id }}">{{ category }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Upload Image</label>
+                <input class="form-control" name="images" type="file" multiple />
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-textarea">Short Description</label>
+                <textarea class="form-control" name="short_description" id="basic-form-textarea" rows="3" placeholder="Description">{{ product.short_description }}</textarea>
+              </div>
+              <div class="mb-3">
+                <label class="form-label" for="basic-form-textarea">Description</label>
+                <textarea class="form-control" id="basic-form-textarea" name="description" rows="3" placeholder="Description">{{ product.description }}</textarea>
+              </div>
+            <div class="form-check">
+              <input class="form-check-input" id="flexCheckDefault" type="checkbox" value="True"
+              {% if product.is_premium %}checked{% endif %}
+              />
+              <label class="form-check-label" for="flexCheckDefault">Premium product</label>
+            </div>
+                <div id="key-value-pairs" style="margin-bottom: 20px">
+                    <div class="key-value-pair">
+                        {% for index, spec in specification %}
+                            <label for="key{{ index }}">Key:</label>
+                            <input class="form-control" style="display: inline-block;width: auto;margin-right: 90px" value="{{ spec.0 }}" type="text" id="key{{ index }}" name="key{{ index }}" required>
+                            <label for="value{{ index }}">Value:</label>
+                            <input class="form-control" style="display: inline-block;width: auto;" type="text" value="{{ spec.1 }}" id="value{{ index }}" name="value{{ index }}" required>
+                            <button style="margin-right: 72px;" class="btn btn-danger remove-pair" type="button">Remove</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <button class="btn btn-primary add-pair" type="button">Add Pair</button>
+              <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="card mb-4"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.add-pair').click(function() {
+            var index = $('.key-value-pair').length + 1;
+            var newPair = $('<div class="key-value-pair">' +
+                                '<label for="key' + index + '">Key:</label>' +
+                                '<input class="form-control" style="display: inline-block;width: auto;margin-right: 90px" type="text" id="key' + index + '" name="key' + index + '" required>' +
+                                '<label for="value' + index + '">Value:</label>' +
+                                '<input class="form-control" style="display: inline-block;width: auto;" type="text" id="value' + index + '" name="value' + index + '" required>' +
+                                '<button class="btn btn-danger remove-pair" type="button">Remove</button>' +
+                            '</div>');
+            $('#key-value-pairs').append(newPair);
+        });
+
+        $(document).on('click', '.remove-pair', function() {
+            $(this).closest('.key-value-pair').remove();
+        });
+    });
+</script>
+{% endblock %}

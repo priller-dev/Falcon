@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: web
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000" ]
+    expose:
+      - 8000
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - static_volume:/home/app/code/static
+      - media_volume:/home/app/code/media
+  db:
+    image: postgres:alpine3.17
+    container_name: db
+    environment:
+      POSTGRES_DB: django_test
+      POSTGRES_PASSWORD: 1
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "1337:80"
+    depends_on:
+      - web
+    volumes:
+      - ./static:/home/app/code/static
+
+volumes:
+  static_volume:
+  media_volume:
+  pgdata:

@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "root"
+version = "0.1.0"
+description = ""
+authors = ["Priller <coderbackend@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.1.7"
+python-dotenv = "^1.0.0"
+psycopg2-binary = "^2.9.5"
+pillow = "^9.4.0"
+faker = "^18.3.1"
+pylint = "^2.17.1"
+flake8 = "^6.0.0"
+aiogram = "^2.25.1"
+sqlalchemy = "^2.0.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

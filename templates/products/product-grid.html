@@ -1,0 +1,284 @@
+{% extends 'products/base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- ===============================================-->
+<!--    Main Content-->
+<!-- ===============================================-->
+<main class="main" id="top">
+
+  <div class="container" data-layout="container">
+    <script>
+      var isFluid = JSON.parse(localStorage.getItem('isFluid'));
+      if (isFluid) {
+        var container = document.querySelector('[data-layout]');
+        container.classList.remove('container');
+        container.classList.add('container-fluid');
+      }
+    </script>
+    <nav class="navbar navbar-light navbar-vertical navbar-expand-xl">
+    <script>
+        var navbarStyle = localStorage.getItem("navbarStyle");
+        if (navbarStyle && navbarStyle !== 'transparent') {
+            document.querySelector('.navbar-vertical').classList.add(`navbar-${navbarStyle}`);
+        }
+    </script>
+    <div class="d-flex align-items-center">
+        <div class="toggle-icon-wrapper">
+
+            <button class="btn navbar-toggler-humburger-icon navbar-vertical-toggle" data-bs-toggle="tooltip"
+                    data-bs-placement="left" title="Toggle Navigation">
+                <span class="navbar-toggle-icon"><span class="toggle-line"></span></span></button>
+
+        </div>
+        <a class="navbar-brand" href="">
+            <div class="d-flex align-items-center py-3"><img class="me-2"
+                                                             src="{% static 'assets/img/icons/spot-illustrations/falcon.png' %}"
+                                                             alt="" width="40"/>
+                <span class="font-sans-serif">falcon</span>
+            </div>
+        </a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarVerticalCollapse">
+        <div class="navbar-vertical-content scrollbar">
+            <ul class="navbar-nav flex-column mb-3" id="navbarVerticalNav">
+                <li class="nav-item">
+                    <!-- parent pages--><a class="nav-link dropdown-indicator" href="#e-commerce" role="button"
+                                           data-bs-toggle="collapse" aria-expanded="true"
+                                           aria-controls="e-commerce">
+                    <div class="d-flex align-items-center"><span class="nav-link-icon"><span
+                            class="fas fa-shopping-cart"></span></span><span
+                            class="nav-link-text ps-1">E commerce</span>
+                    </div>
+                </a>
+                    <ul class="nav collapse show" id="e-commerce">
+                        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#product"
+                                                data-bs-toggle="collapse" aria-expanded="true"
+                                                aria-controls="e-commerce">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Product</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                            <ul class="nav collapse show" id="product">
+                                <li class="nav-item"><a class="nav-link"
+                                                        href="{% url 'products:products_list' %}"
+                                                        aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Product list</span>
+                                    </div>
+                                </a>
+                                    <!-- more inner pages-->
+                                </li>
+                                <li class="nav-item"><a class="nav-link active"
+                                                        href=""
+                                                        aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Product grid</span>
+                                    </div>
+                                </a>
+                                    <!-- more inner pages-->
+                                </li>
+                                <li class="nav-item"><a class="nav-link"
+                                                        href=""
+                                                        aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Product details</span>
+                                    </div>
+                                </a>
+                                    <!-- more inner pages-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link dropdown-indicator" href="#orders"
+                                                data-bs-toggle="collapse" aria-expanded="false"
+                                                aria-controls="e-commerce">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Orders</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                            <ul class="nav collapse false" id="orders">
+                                <li class="nav-item"><a class="nav-link"
+                                                        href="../../../app/e-commerce/orders/order-list.html"
+                                                        aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Order list</span>
+                                    </div>
+                                </a>
+                                    <!-- more inner pages-->
+                                </li>
+                                <li class="nav-item"><a class="nav-link"
+                                                        href="../../../app/e-commerce/orders/order-details.html"
+                                                        aria-expanded="false">
+                                    <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Order details</span>
+                                    </div>
+                                </a>
+                                    <!-- more inner pages-->
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="../../../app/e-commerce/customers.html"
+                                                aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Customers</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link"
+                                                href="../../../app/e-commerce/customer-details.html"
+                                                aria-expanded="false">
+                            <div class="d-flex align-items-center"><span
+                                    class="nav-link-text ps-1">Customer details</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="../../../app/e-commerce/shopping-cart.html"
+                                                aria-expanded="false">
+                            <div class="d-flex align-items-center"><span
+                                    class="nav-link-text ps-1">Shopping cart</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="../../../app/e-commerce/checkout.html"
+                                                aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Checkout</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="../../../app/e-commerce/billing.html"
+                                                aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Billing</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="../../../app/e-commerce/invoice.html"
+                                                aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Invoice</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'products:add_product' %}"
+                         aria-expanded="false">
+                            <div class="d-flex align-items-center"><span class="nav-link-text ps-1">Add Product</span>
+                            </div>
+                        </a>
+                            <!-- more inner pages-->
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="settings mb-3">
+                <div class="card alert p-0 shadow-none" role="alert">
+                    <div class="btn-close-falcon-container">
+                        <div class="btn-close-falcon" aria-label="Close" data-bs-dismiss="alert"></div>
+                    </div>
+                    <div class="card-body text-center"><img
+                            src="{% static 'assets/img/icons/spot-illustrations/navbar-vertical.png' %}" alt=""
+                            width="80"/>
+                        <p class="fs--2 mt-2">Loving what you see? <br/>Get your copy of <a href="#!">Falcon</a></p>
+                        <div class="d-grid"><a class="btn btn-sm btn-purchase"
+                                               href="https://themes.getbootstrap.com/product/falcon-admin-dashboard-webapp-template/"
+                                               target="_blank">Purchase</a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    <div class="content">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row flex-between-center">
+            <div class="col-sm-auto mb-2 mb-sm-0">
+              <h6 class="mb-0">Showing 1-24 of 205 Products</h6>
+            </div>
+            <div class="col-sm-auto">
+              <div class="row gx-2 align-items-center">
+                <div class="col-auto">
+                  <form class="row gx-2">
+                    <div class="col-auto"><small>Sort by:</small></div>
+                    <div class="col-auto">
+                      <select class="form-select form-select-sm" aria-label="Bulk actions">
+                        <option selected="">Best Match</option>
+                        <option value="Refund">Newest</option>
+                        <option value="Delete">Price</option>
+                      </select>
+                    </div>
+                  </form>
+                </div>
+                <div class="col-auto pe-0"> <a class="text-600 px-1" href="{% url 'products:products_list' %}"
+                                               data-bs-toggle="tooltip" data-bs-placement="top" title="Product List">
+                    <span class="fas fa-list-ul"></span></a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="mb-4 col-md-6 col-lg-4">
+              <div class="border rounded-1 h-100 d-flex flex-column justify-content-between pb-3">
+                <div class="overflow-hidden">
+                  <div class="position-relative rounded-top overflow-hidden"><a class="d-block" href="{% url 'products:product_detail'  %}">
+                      <img class="img-fluid rounded-top" src="img" alt="nvmbhg" /></a>
+                      <span class="badge rounded-pill bg-success position-absolute mt-2 me-2 z-index-2 top-0 end-0">Nice</span>
+                  </div>
+                  <div class="p-3">
+                    <h5 class="fs-0"><a class="text-dark" href="">
+                       Name</a></h5>
+                    <p class="fs--1 mb-3"><a class="text-500" href="#!">dssdsd</a></p>
+                    <h5 class="fs-md-2 text-warning mb-0 d-flex align-items-center mb-3">
+{#                        {% if product.discount %}#}
+                            $ 1500
+                            <del class="ms-2 fs--1 text-500">$50000</del>
+
+{#                            {% else %}#}
+{#                            $16000#}
+{#                        {% endif %}#}
+
+                    </h5>
+                    <p class="fs--1 mb-1">Shipping Cost: <strong>$15000</strong></p>
+                    <p class="fs--1 mb-1">Stock: <strong class="text-success">
+{#                        {% if product.number %}#}
+{#                            Available#}
+{#                            {% else %}#}
+{#                            Sold-out#}
+{#                        {% endif %}#}
+                        Available
+                    </strong>
+                    </p>
+                  </div>
+                </div>
+                <div class="d-flex flex-between-center px-3">
+                  <div><span class="ms-1"></span>
+                  </div>
+                  <div><a class="btn btn-sm btn-falcon-default me-2" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Wish List">
+                      <span class="far fa-heart"></span></a><a class="btn btn-sm btn-falcon-default" href="#!" data-bs-toggle="tooltip" data-bs-placement="top" title="Add to Cart">
+                      <span class="fas fa-cart-plus"></span></a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-light d-flex justify-content-center">
+          <div>
+            <button class="btn btn-falcon-default btn-sm me-2" type="button" disabled="disabled" data-bs-toggle="tooltip" data-bs-placement="top" title="Prev">
+                <span class="fas fa-chevron-left"></span></button><a class="btn btn-sm btn-falcon-default text-primary me-2" href="#!">1</a>
+              <a class="btn btn-sm btn-falcon-default me-2" href="#!">2</a><a class="btn btn-sm btn-falcon-default me-2" href="#!"> <span class="fas fa-ellipsis-h"></span>
+          </a><a class="btn btn-sm btn-falcon-default me-2" href="#!">35</a>
+            <button class="btn btn-falcon-default btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Next"><span class="fas fa-chevron-right">     </span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+<!-- ===============================================-->
+<!--    End of Main Content-->
+<!-- ===============================================-->
+{% endblock %}
