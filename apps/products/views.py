@@ -20,12 +20,12 @@ def homepage(request):
 def products_list(request):
     page = int(request.GET.get('page', 1))
     if request.user.is_authenticated and request.user.type == 'vip_client':
-        products = Product.objects.order_by('id').all()
+        products = Product.objects
     else:
         products = Product.objects.filter(
             is_premium=False
-        ).order_by('id').all()
-    paginator = Paginator(products, per_page=7)
+        )
+    paginator = Paginator(products.select_related('category').order_by('id'), per_page=7)
 
     redirect_url = reverse_lazy(
         'products:products_list'
@@ -97,8 +97,7 @@ def generate_fake_data(request):
     fake = Faker()
     lst_of_products = []
     for _ in range(200):
-        discount = fake.random.randint(10, 99)
-        discount -= discount % 10
+        discount = fake.random.randint(1, 9) * 10
         lst_of_products.append(Product(
             name=fake.name(),
             price=fake.random.randint(2000, 180000),
@@ -107,14 +106,15 @@ def generate_fake_data(request):
             discount=discount,
             quantity=fake.random.randint(1, 10),
             shipping_cost=fake.random.randint(10, 80),
-            category=get_object_or_404(Category, id=fake.random.randint(1, 2))
+            category_id=fake.random.randint(1, 2),
+            owner_id=fake.random.randint(1, 2)
         ))
     Product.objects.bulk_create(lst_of_products)
     return redirect(reverse('products:homepage'))
 
 
 def product_detail(request, pk):
-    product = Product.objects.get(id=pk)
+    product = Product.objects.get(pk=pk)
     context = {
         'product': product
     }

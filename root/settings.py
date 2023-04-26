@@ -2,28 +2,36 @@ import os
 from pathlib import Path
 
 from django.contrib.messages import constants as messages
-from dotenv import load_dotenv
+from environs import Env
 
-load_dotenv('../.env')
+env = Env()
+env.read_env('.env.dev')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-=5ocj2^g(&kd#a-g#k#v(^^k6$0f)eldlfibp$!e*jj$4_i4r)'
 
-DEBUG = os.getenv('DEBUG') or False
+DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
+]
+
+MY_APPS = [
     'apps.products.apps.ProductsConfig',
     'apps.authentication.apps.AuthenticationConfig'
 ]
+
+THIRD_PARTY_APPS = ['debug_toolbar']
+
+INSTALLED_APPS = DJANGO_APPS + MY_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -33,6 +41,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'root.urls'
@@ -58,11 +67,11 @@ WSGI_APPLICATION = 'root.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.getenv('POSTGRES_DB', 'django_test'),
-        'USER': os.getenv('POSTGRES_USER', 'postgres'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', '1'),
-        'PORT': os.getenv('POSTGRES_PORT', '5432')
+        'NAME': env.str('POSTGRES_DB'),
+        'USER': env.str('POSTGRES_USER'),
+        'HOST': env.str('POSTGRES_HOST'),
+        'PASSWORD': env.str('POSTGRES_PASSWORD'),
+        'PORT': env.int('POSTGRES_PORT')
     }
 }
 
@@ -92,9 +101,8 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_ROOT = BASE_DIR / "staticfiles"
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -115,7 +123,12 @@ TOKEN_EXPIRATION_TIME = 3600  # 1 hour in mins
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_PORT = env.int('EMAIL_PORT')
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
+
+# debug toolbar
+INTERNAL_IPS = [
+    '127.0.0.1'
+]
