@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apps.authentication.views import forgot, login_page, logout_page, register, reset
+from apps.users.views import forgot, login_page, logout_page, register, reset
 
 urlpatterns = [
     path('forgot', forgot, name='forgot'),

@@ -5,7 +5,7 @@ from django.template.loader import render_to_string
 from root.settings import EMAIL_HOST_USER
 
 
-def send_gmail(subject: str, username: str, to_email: str, link: str) -> None:
+def send_verification_link(subject: str, username: str, to_email: str, link: str) -> None:
     """this function sends email verification as html to particular user"""
     context = {
         'name': username,

@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Category(models.Model):
     name = models.CharField(max_length=255)
 
@@ -26,7 +27,7 @@ class ProductImage(models.Model):
 
 
 class Review(models.Model):
-    user = models.ForeignKey('authentication.Users', models.CASCADE)
+    user = models.ForeignKey('users.Users', models.CASCADE)
     body = models.TextField()
     product = models.ForeignKey('Product', models.CASCADE)
     created_at = models.DateTimeField(auto_now=True)
@@ -45,7 +46,7 @@ class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
     short_description = models.TextField()
-    owner = models.ForeignKey('authentication.Users', models.CASCADE)
+    owner = models.ForeignKey('users.Users', models.CASCADE)
     description = models.TextField(blank=True, null=True)
     discount = models.IntegerField(blank=True, default=0)
     quantity = models.IntegerField()
@@ -74,25 +75,22 @@ class Product(models.Model):
 
 
 class ShoppingCard(models.Model):
-    user = models.ForeignKey('authentication.Users', models.CASCADE)
+    user = models.ForeignKey('users.Users', models.CASCADE)
     product = models.ForeignKey('Product', models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} -> {self.product}"
 
 
 class WishList(models.Model):
-    user = models.ForeignKey('authentication.Users', models.CASCADE)
+    user = models.ForeignKey('users.Users', models.CASCADE)
     product = models.ForeignKey('Product', models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user} -> {self.product}"
 
 
 class ProductProxy(Product):
 
     class Meta:
         proxy = True
-
-
-class Region(models.Model):
-    name = models.CharField(max_length=255)
-
-
-class District(models.Model):
-    name = models.CharField(max_length=255)
-    region = models.ForeignKey('Region', models.CASCADE)

@@ -1,21 +1,23 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http import Http404
 from django.shortcuts import render, redirect, reverse
 
-from apps.authentication.forms import RegisterUserForm, LoginUserForm, PasswordResetForm
-from apps.authentication.utils.send_gmail import send_gmail
-from apps.authentication.utils.tokens import base36_to_int, generate_one_time_link, validate_one_time_link
+from apps.users.forms import RegisterUserForm, LoginUserForm, PasswordResetForm
+from apps.users.utils.send_email import send_verification_link
+from apps.users.utils.tokens import base36_to_int, generate_one_time_link, validate_one_time_link
+from django.views.generic import FormView
+from apps.users.models import Users as User
 
 
 def forgot(request):
     if request.method == 'POST':
         email = request.POST.get('email')
-        User = get_user_model()
         user = User.objects.get(email=email)
         user_id, token, token_created = generate_one_time_link(user).split('-')
         link = f"http://127.0.0.1:8000/auth/reset-password/{user_id}/{token_created}-{token}"
-        send_gmail('Account Recovery', user.username, email, link)
+        send_verification_link('Account Recovery', user.username, email, link)
     return render(request, 'authentication/forgot-password.html')
 
 
@@ -28,7 +30,6 @@ def login_page(request):
         if form.is_valid():
             email = form.cleaned_data.get('email')
             password = form.cleaned_data.get('password')
-            User = get_user_model()
             try:
                 username = User.objects.get(email=email).username
                 user = authenticate(username=username, password=password)
@@ -45,7 +46,13 @@ def login_page(request):
     return render(request, 'authentication/login.html', context)
 
 
-# @login_required(login_url='authentication:login')
+class LoginPage(LoginView):
+    template_name = 'authentication/login.html'
+    form_class = LoginUserForm
+    redirect_authenticated_user = True
+
+
+# @login_required(login_url='users:login')
 def logout_page(request):
     logout(request)
     return render(request, 'authentication/logout.html')
@@ -72,7 +79,6 @@ def reset(request, user_id, token):
         'token': token
     }
     user_id = base36_to_int(str(user_id))
-    User = get_user_model()
     user = User.objects.get(id=user_id)
     created_at, token = token.split('-')[0], token.split('-')[1]
     if request.method == 'POST' and user.used_token is None:
@@ -84,7 +90,7 @@ def reset(request, user_id, token):
         if form.is_valid():
             user.set_password(form.data.get('password1'))
             user.save()
-            return redirect(reverse('authentication:login'))
+            return redirect(reverse('users:login'))
     if not validate_one_time_link(user, token, created_at):
         raise Http404
     user.used_token = None

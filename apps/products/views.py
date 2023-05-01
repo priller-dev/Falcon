@@ -60,7 +60,6 @@ def add_product(request):
             request.POST[filtered_data[i]]: request.POST[filtered_data[i + 1]]
             for i in range(0, len(filtered_data) - 1, 2)
         }
-        #  **{'owner': request.user}
         form = ProductForm(request.POST)
         if form.is_valid():
             product = Product(
@@ -107,7 +106,7 @@ def generate_fake_data(request):
             quantity=fake.random.randint(1, 10),
             shipping_cost=fake.random.randint(10, 80),
             category_id=fake.random.randint(1, 2),
-            owner_id=fake.random.randint(1, 2)
+            owner_id=1
         ))
     Product.objects.bulk_create(lst_of_products)
     return redirect(reverse('products:homepage'))
@@ -249,12 +248,3 @@ class AddFavorite(LoginRequiredMixin, View):
             wish.delete()
 
         return redirect(reverse('products:products_list'))
-
-
-# custom exceptions
-def custom_404(request, exception):
-    return render(request, 'errors/404.html')
-
-
-def custom_500(request):
-    return render(request, 'errors/500.html')

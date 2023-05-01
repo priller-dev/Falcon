@@ -13,18 +13,28 @@ services:
       - .env.prod
     depends_on:
       - db
+      - es
+      - mysql
     volumes:
       - static_volume:/home/app/code/static
       - media_volume:/home/app/code/media
   db:
     image: postgres:alpine3.17
-    container_name: db
+    container_name: postgres_db
     env_file:
       - .env.prod.db
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+  es:
+    restart: always
+    image: elasticsearch:5.6.16-alpine
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
 
   nginx:
     build: ./nginx
@@ -35,6 +45,18 @@ services:
       - web
     volumes:
       - ./static:/home/app/code/static
+
+  mysql:
+    restart: always
+    image: mysql
+    container_name: mysql_db
+    environment:
+      - MYSQL_DATABASE=mysql_db
+      - MYSQL_USER=mysql
+      - MYSQL_PASSWORD=1
+      - MYSQL_ROOT_PASSWORD=1
+
+
 
 volumes:
   static_volume:

@@ -18,7 +18,7 @@ def generate_one_time_link(user):
     return f'{user_id}-{token}-{current_time}'
 
 
-def validate_one_time_link(user,token,created_at_token):
+def validate_one_time_link(user, token, created_at_token):
     if not user.used_token:
         return False
     user.used_token = False

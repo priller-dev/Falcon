@@ -65,8 +65,8 @@
                     </li>
                     {% if not request.user.is_authenticated %}
                         <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" id="navbarDropdownLogin"
-                                                         href="{% url "authentication:login" %}">Login</a>
-                        <li class="nav-item"><a class="nav-link" href="{% url "authentication:register" %}">Register</a>
+                                                         href="{% url "users:login" %}">Login</a>
+                        <li class="nav-item"><a class="nav-link" href="{% url "users:register" %}">Register</a>
                         </li>
                     {% endif %}
                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-card"
@@ -91,7 +91,7 @@
                             <h5 id="modalLabel">Register</h5>
                         </div>
                         <div class="col-auto">
-                            <p class="fs--1 text-600 mb-0">Have an account? <a href="{% url "authentication:login" %}">Login</a>
+                            <p class="fs--1 text-600 mb-0">Have an account? <a href="{% url "users:login" %}">Login</a>
                             </p>
                         </div>
                     </div>

@@ -404,7 +404,7 @@
                        href="../../../pages/user/settings.html">Settings</a>
                     {% if user.is_authenticated %}
                         <a class="dropdown-item"
-                           href="{% url 'authentication:logout' %}">Logout</a>
+                           href="{% url 'users:logout' %}">Logout</a>
                         {% if user.type == 'admin' %}
                             <a class="dropdown-item"
                                href="{% url 'products:add_product' %}">Add
@@ -415,9 +415,9 @@
                         {% endif %}
                     {% else %}
                         <a class="dropdown-item"
-                           href="{% url 'authentication:register' %}">Register</a>
+                           href="{% url 'users:register' %}">Register</a>
                         <a class="dropdown-item"
-                           href="{% url 'authentication:login' %}">Login</a>
+                           href="{% url 'users:login' %}">Login</a>
                     {% endif %}
                 </div>
             </div>

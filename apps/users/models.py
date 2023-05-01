@@ -25,3 +25,7 @@ class Users(AbstractUser):
             cart.product.discount_price
             for cart in self.shoppingcard_set.all()
         )
+
+    class Meta:
+        verbose_name = 'User'
+        db_table = 'users'

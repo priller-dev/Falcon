@@ -26,7 +26,7 @@ DJANGO_APPS = [
 
 MY_APPS = [
     'apps.products.apps.ProductsConfig',
-    'apps.authentication.apps.AuthenticationConfig'
+    'apps.users.apps.UsersConfig'
 ]
 
 THIRD_PARTY_APPS = ['debug_toolbar']
@@ -117,7 +117,7 @@ MESSAGE_TAGS = {
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'authentication.Users'
+AUTH_USER_MODEL = 'users.Users'
 
 TOKEN_EXPIRATION_TIME = 3600  # 1 hour in mins
 
