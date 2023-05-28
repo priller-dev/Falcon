@@ -24,7 +24,7 @@ def validate_one_time_link(user, token, created_at_token):
     user.used_token = False
     user.save()
     user_id = int_to_base36(user.id)
-    last_login = int_to_base36(int(user.last_login.timestamp()))
+    last_login = int_to_base36(int(user.last_login.timestamp() if user.last_login else 'Null'))
     date_joined = int_to_base36(int(user.date_joined.timestamp()))
     now = int(time.time())
     if now > (base36_to_int(created_at_token) + TOKEN_EXPIRATION_TIME):

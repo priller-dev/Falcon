@@ -24,11 +24,3 @@ class ReviewForm(forms.ModelForm):
         exclude = ('created_at',)
 
 
-
-
-
-
-
-
-
-

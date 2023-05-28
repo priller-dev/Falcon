@@ -17,6 +17,29 @@ def homepage(request):
     return render(request, 'products/homepage.html')
 
 
+class BlogView(ListView):
+    template_name = 'products/product-list.html'
+    context_object_name = 'products'
+
+    def paginate_queryset(self, queryset, page_size):
+        return super().paginate_queryset(queryset, page_size)
+
+    def get_queryset(self):
+        self.queryset = Product.objects.all()
+        name = self.request.GET.get('category', '*')
+        self.queryset = self.queryset.filter_or_all(category__name=name)
+        self.queryset = self.queryset.filter_or_all(
+            name__icontains=self.request.GET.get('search', '*')
+        )
+
+        return super().get_queryset()
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['categories'] = Category.objects.all()
+        return context
+
+
 def products_list(request):
     page = int(request.GET.get('page', 1))
     if request.user.is_authenticated and request.user.type == 'vip_client':
@@ -62,6 +85,7 @@ def add_product(request):
         }
         form = ProductForm(request.POST)
         if form.is_valid():
+            Product.objects.filter()
             product = Product(
                 name=request.POST.get('name'),
                 price=request.POST.get('price'),

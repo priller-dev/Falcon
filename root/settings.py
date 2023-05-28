@@ -82,7 +82,7 @@ DATABASES = {
 #     },
 #     {
 #         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-#     },
+#     },4
 #     {
 #         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
 #     },
@@ -92,7 +92,7 @@ DATABASES = {
 # ]
 
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-Ru'
 
 TIME_ZONE = 'UTC'
 

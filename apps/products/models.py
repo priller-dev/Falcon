@@ -15,7 +15,7 @@ class Category(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey('Product', models.CASCADE, 'images')
-    image = models.ImageField(upload_to='photos/')
+    image = models.ImageField()
 
     class Meta:
         verbose_name = 'ProductImage'
@@ -42,6 +42,18 @@ class Review(models.Model):
         return self.user_id
 
 
+class ProductManager(models.Manager):
+    def filter_or_all(self):
+        return ProductQuerySet(self.model, using=self._db)
+
+
+class ProductQuerySet(models.QuerySet):
+    def filter_or_all(self, **params):
+        if '*' in params:
+            return self.all()
+        return self.filter(**params)
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     price = models.IntegerField()
@@ -55,6 +67,8 @@ class Product(models.Model):
     specification = models.JSONField(default=dict, blank=True)
     category = models.ForeignKey('products.Category', models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    objects = ProductQuerySet.as_manager()
 
     @property
     def discount_price(self):
@@ -91,6 +105,5 @@ class WishList(models.Model):
 
 
 class ProductProxy(Product):
-
     class Meta:
         proxy = True

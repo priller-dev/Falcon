@@ -11,7 +11,6 @@ class RegisterUserForm(UserCreationForm):
         model = Users
         fields = ('username', 'password1', 'email')
 
-
 class LoginUserForm(forms.Form):
     email = forms.EmailField(max_length=255, required=True)
     password = forms.CharField(max_length=20, required=True)

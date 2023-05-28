@@ -5,7 +5,8 @@ from apps.products.views import homepage, products_list, \
     shopping_cart, add_to_shopping_cart, delete_shopping_cart_item, \
     buy_shopping_cart_items
 
-from apps.products.views import MyProductsView, EditMyProductView, AddFavorite, DeleteMyProductView
+from apps.products.views import MyProductsView, EditMyProductView, AddFavorite, DeleteMyProductView\
+    , BlogView
 
 
 urlpatterns = [
@@ -14,6 +15,7 @@ urlpatterns = [
          name='products_list'),
     path('generate_data', generate_fake_data, name='generate_data'),
     path('product_detail/<int:pk>', product_detail, name='product_detail'),
+    path('blog/', BlogView.as_view())
 ]
 
 for_admins = [

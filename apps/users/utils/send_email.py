@@ -11,6 +11,7 @@ def send_verification_link(subject: str, username: str, to_email: str, link: str
         'name': username,
         'link': link
     }
+
     html_content = render_to_string('authentication/email_page.html', context)
 
     msg = EmailMessage(subject, body=html_content, from_email=EMAIL_HOST_USER, to=[to_email])

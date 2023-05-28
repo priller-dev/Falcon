@@ -33,13 +33,13 @@
                       <h3>Account Login</h3>
                     </div>
                   </div>
-{#                    {% if messages %}#}
-{#                        {% for message in messages %}#}
-{#                            <div class="alert {{ message.tags }}" role="alert">#}
-{#                                {{ message }}#}
-{#                            </div>#}
-{#                        {% endfor %}#}
-{#		            {% endif %}#}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert {{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+		            {% endif %}
                   <form method="post" action="{% url 'users:login' %}">
                       {% csrf_token %}
                     <div class="mb-3">

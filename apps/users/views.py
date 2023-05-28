@@ -2,12 +2,12 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import Http404
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy, reverse
 
 from apps.users.forms import RegisterUserForm, LoginUserForm, PasswordResetForm
 from apps.users.utils.send_email import send_verification_link
 from apps.users.utils.tokens import base36_to_int, generate_one_time_link, validate_one_time_link
-from django.views.generic import FormView
 from apps.users.models import Users as User
 
 
@@ -49,10 +49,25 @@ def login_page(request):
 class LoginPage(LoginView):
     template_name = 'authentication/login.html'
     form_class = LoginUserForm
+    extra_context = {'form': LoginUserForm()}
     redirect_authenticated_user = True
+    success_url = reverse_lazy('product:homepage')
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        password = form.cleaned_data.get('password')
+        username = get_object_or_404(User, email=email).username
+        user = authenticate(username, password=password)
+        if user:
+            login(self.request, user)
+            return super().form_valid(form)
+        messages.error(self.request, 'email or password Incorrect!')
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Email is invalid!')
+        return super().form_invalid(form)
 
 
-# @login_required(login_url='users:login')
 def logout_page(request):
     logout(request)
     return render(request, 'authentication/logout.html')
